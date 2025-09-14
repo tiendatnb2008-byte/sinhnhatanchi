@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhập Mật Khẩu</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #ff99cc, #ff66b2, #ffb3d9, #ffe6f0);
+            background-size: 400%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            animation: gradientBG 12s ease infinite;
+            position: relative;
+        }
+        
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        .container {
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            color: #fff;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 102, 178, 0.8), 0 0 20px rgba(255, 102, 178, 0.5);
+            animation: glowText 2s ease-in-out infinite;
+        }
+        
+        @keyframes glowText {
+            0%,
+            100% {
+                text-shadow: 0 0 10px rgba(255, 102, 178, 0.8), 0 0 20px rgba(255, 102, 178, 0.5);
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(255, 102, 178, 1), 0 0 30px rgba(255, 102, 178, 0.7);
+            }
+        }
+        
+        .content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .avatar {
+            width: 200px;
+            height: 200px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            object-fit: contain;
+            animation: bounceAvatar 3s ease-in-out infinite;
+        }
+        
+        .avatar:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 0 30px rgba(255, 102, 178, 0.7);
+        }
+        
+        @keyframes bounceAvatar {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        .password-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        input#password {
+            width: 200px;
+            padding: 12px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            border: 2px solid #fff;
+            border-radius: 8px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        input#password.active {
+            border-color: #ff66b2;
+            box-shadow: 0 0 20px rgba(255, 102, 178, 0.8);
+            transform: scale(1.05);
+            animation: pulseInput 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes pulseInput {
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(255, 102, 178, 0.8);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(255, 102, 178, 1);
+            }
+        }
+        
+        input#password.shake {
+            animation: shake 0.5s ease;
+        }
+        
+        @keyframes shake {
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+            10%,
+            30%,
+            50%,
+            70%,
+            90% {
+                transform: translateX(-5px);
+            }
+            20%,
+            40%,
+            60%,
+            80% {
+                transform: translateX(5px);
+            }
+        }
+        
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .keypad button {
+            width: 60px;
+            height: 60px;
+            font-size: 20px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .keypad button:hover {
+            background-color: #ff66b2;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 102, 178, 0.5);
+        }
+        
+        .keypad button:active {
+            transform: translateY(0);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .keypad button::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.5) 10%, transparent 10.1%);
+            transform: scale(0);
+            transition: transform 0.3s ease;
+            top: 50%;
+            left: 50%;
+            margin: -50px 0 0 -50px;
+        }
+        
+        .keypad button:active::after {
+            transform: scale(2);
+            transition: transform 0.2s ease;
+        }
+        
+        .keypad button.zero {
+            grid-column: 2;
+        }
+        
+        .keypad button.clear {
+            background-color: #ff66b2;
+            color: white;
+        }
+        
+        .submit {
+            width: 60px;
+            height: 60px;
+            font-size: 20px;
+            border: none;
+            background-color: #ff66b2;
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 102, 178, 0.5);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: glowSubmit 2s ease-in-out infinite;
+        }
+        
+        .submit:hover {
+            transform: scale(1.2) rotate(10deg);
+            box-shadow: 0 0 30px rgba(255, 102, 178, 0.8);
+        }
+        
+        .submit:active {
+            transform: scale(0.95);
+        }
+        
+        @keyframes glowSubmit {
+            0%,
+            100% {
+                box-shadow: 0 0 15px rgba(255, 102, 178, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 25px rgba(255, 102, 178, 0.9);
+            }
+        }
+        
+        .tiktok-section {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #000;
+            width: 100vw;
+            height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: #fff;
+            transform: translateY(20px);
+        }
+        
+        .tiktok-section.visible {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .tiktok-header {
+            color: #ff66b2;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(255, 102, 178, 0.8);
+        }
+        
+        .tiktok-user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .tiktok-user img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        .tiktok-user-info {
+            text-align: left;
+        }
+        
+        .tiktok-username {
+            font-weight: bold;
+            font-size: 20px;
+            color: #fff;
+        }
+        
+        .tiktok-caption {
+            font-size: 16px;
+            color: #ccc;
+        }
+        
+        .tiktok-countdown {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ff66b2;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(255, 102, 178, 0.7);
+        }
+        
+        .tiktok-interactions {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .tiktok-interaction {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            color: #fff;
+        }
+        
+        .tiktok-interaction img {
+            width: 30px;
+            height: 30px;
+            transition: transform 0.2s ease;
+        }
+        
+        .tiktok-interaction img:hover {
+            transform: scale(1.2);
+        }
+        
+        .tiktok-post-info {
+            font-size: 18px;
+            margin-bottom: 10px;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .tiktok-music {
+            font-size: 16px;
+            color: #ccc;
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .tiktok-comment {
+            font-size: 16px;
+            color: #999;
+            text-align: center;
+            width: 100%;
+            padding: 10px;
+            background-color: #333;
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .heart-particle {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: transparent;
+            clip-path: path('M10 3.22l-.61-.6C7.4 1.13 4.26 1.77 3 3.84 1.27 6.46 2.07 10.29 5.5 13.56l4.5 4.5 4.5-4.5c3.43-3.27 4.23-7.1 2.5-9.72-1.26-2.07-4.4-2.71-6.39-1.22l-.61.6z');
+            animation: floatHeart 8s infinite linear;
+            opacity: 0.7;
+            z-index: 0;
+        }
+        
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.7;
+            }
+            50% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .sparkle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            animation: sparkle 3s infinite ease-in-out;
+            z-index: 0;
+        }
+        
+        @keyframes sparkle {
+            0%,
+            100% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="content">
+            <img src="hpbd/anh1.jpg" alt="Avatar" class="avatar">
+            <div class="password-section" id="passwordSection">
+                <h1>NHẬP PASS ĐI NGƯỜI ĐẸP</h1>
+                <input type="text" id="password" placeholder="Enter password" readonly>
+                <div class="keypad">
+                    <button onclick="addNumber('1')">1</button>
+                    <button onclick="addNumber('2')">2</button>
+                    <button onclick="addNumber('3')">3</button>
+                    <button onclick="addNumber('4')">4</button>
+                    <button onclick="addNumber('5')">5</button>
+                    <button onclick="addNumber('6')">6</button>
+                    <button onclick="addNumber('7')">7</button>
+                    <button onclick="addNumber('8')">8</button>
+                    <button onclick="addNumber('9')">9</button>
+                    <button onclick="addNumber('0')" class="zero">0</button>
+                    <button onclick="clearPassword()" class="clear">✖</button>
+                </div>
+                <button onclick="checkPassword()" class="submit">✔</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        let password = "";
+        const correctPassword = "15062020";
+        const passwordInput = document.getElementById("password");
+        const passwordSection = document.getElementById("passwordSection");
+        const tiktokSection = document.getElementById("tiktokSection");
+
+        function addNumber(number) {
+            if (password.length < 8) {
+                password += number;
+                passwordInput.value = password;
+                passwordInput.classList.add("active");
+            }
+        }
+
+        function clearPassword() {
+            password = "";
+            passwordInput.value = password;
+            passwordInput.classList.remove("active");
+        }
+
+        function checkPassword() {
+            if (password === correctPassword) {
+                alert("Mật khẩu đúng! Chuyển sang bước tiếp theo...");
+                window.location.href = "sinhnhat.html";
+            } else {
+                passwordInput.classList.add("shake");
+                setTimeout(() => {
+                    passwordInput.classList.remove("shake");
+                    alert("Mật khẩu sai! Vui lòng thử lại.");
+                    clearPassword();
+                }, 500);
+            }
+        }
+
+        function createBackgroundEffects() {
+            for (let i = 0; i < 30; i++) {
+                const heart = document.createElement("div");
+                heart.classList.add("heart-particle");
+                heart.style.left = `${Math.random() * 100}vw`;
+                heart.style.top = `${Math.random() * 100}vh`;
+                heart.style.animationDelay = `${Math.random() * 5}s`;
+                heart.style.backgroundColor = `hsl(${Math.random() * 20 + 330}, 80%, ${Math.random() * 20 + 60}%)`;
+                document.body.appendChild(heart);
+            }
+            for (let i = 0; i < 20; i++) {
+                const sparkle = document.createElement("div");
+                sparkle.classList.add("sparkle");
+                sparkle.style.left = `${Math.random() * 100}vw`;
+                sparkle.style.top = `${Math.random() * 100}vh`;
+                sparkle.style.animationDelay = `${Math.random() * 3}s`;
+                document.body.appendChild(sparkle);
+            }
+        }
+
+        window.addEventListener("load", createBackgroundEffects);
+    </script>
+</body>
+
+</html>

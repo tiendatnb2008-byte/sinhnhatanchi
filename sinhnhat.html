@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lá Thư Tâm Tình</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ffe6f0, #ffccde);
+            margin: 0;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .heart {
+            position: absolute;
+            color: #ff99b3;
+            font-size: 16px;
+            opacity: 0.7;
+            animation: float 10s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+        }
+        
+        .envelope {
+            position: relative;
+            width: 400px;
+            height: 300px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 10px;
+            transform-origin: top;
+            transition: transform 1s ease;
+            z-index: 2;
+        }
+        
+        .envelope-flap::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: #ffe6f0;
+            clip-path: polygon(0 0, 50% 100%, 100% 0);
+        }
+        
+        .envelope.closed .envelope-flap {
+            transform: rotateX(0deg);
+        }
+        
+        .envelope:not(.closed) .envelope-flap {
+            transform: rotateX(-180deg);
+        }
+        
+        .letter {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-y: auto;
+            opacity: 0;
+            transition: opacity 0.5s ease 0.5s;
+        }
+        
+        .envelope:not(.closed) .letter {
+            opacity: 1;
+        }
+        
+        .envelope.closed .letter {
+            opacity: 0;
+        }
+        
+        h1 {
+            color: #d9534f;
+            text-align: center;
+            font-family: 'Caveat', cursive;
+            font-size: 24px;
+            margin-bottom: 10px;
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typing 2s steps(20, end) 1.5s both;
+        }
+        
+        p {
+            line-height: 1.5;
+            font-size: 14px;
+            display: inline;
+            white-space: nowrap;
+            margin: 0;
+        }
+        
+        p.formatted {
+            display: block;
+            white-space: normal;
+            transition: all 1s ease 11s;
+        }
+        
+        p .word {
+            display: inline-block;
+            opacity: 0;
+            transform: translateX(10px);
+            animation: wordTyping 0.3s ease-out forwards;
+            margin-right: 4px;
+        }
+        
+        p:hover {
+            color: #d9534f;
+            transition: color 0.3s ease;
+        }
+        
+        .signature {
+            text-align: right;
+            font-style: italic;
+            font-size: 14px;
+            margin-top: 10px;
+            font-family: 'Caveat', cursive;
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typing 1s steps(30, end) 11.5s both;
+        }
+        
+        .signature:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .heart-symbol {
+            color: #d9534f;
+            font-size: 16px;
+            animation: pulse 1s infinite;
+            display: block;
+            text-align: center;
+            animation-delay: 12s;
+        }
+        
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+        
+        @keyframes wordTyping {
+            from {
+                opacity: 0;
+                transform: translateX(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .letter,
+            h1,
+            .heart-symbol,
+            .heart,
+            .envelope-flap,
+            p,
+            .signature,
+            .word,
+            p.formatted {
+                animation: none;
+                opacity: 1;
+                transform: none;
+                width: 100%;
+                display: block;
+                white-space: normal;
+            }
+            p:hover,
+            .signature:hover {
+                transform: none;
+                color: inherit;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="hearts" id="hearts"></div>
+    <div class="envelope closed" id="envelope">
+        <div class="envelope-flap"></div>
+        <div class="letter">
+            <h1>lá thư </h1>
+            <p>Chúc chị hai</p>
+            <p>Hiii bà chị của em hôm nay lại thêm</p>
+            <p>tuổi mới rồi đó nha! Chúc hai chị – hai</p>
+            <p>“mẹ đảm quốc dân” – lúc nào cũng vui vẻ,</p>
+            <p> khỏe mạnh, gia đình hạnh phúc </p>
+            <p>và sớm trở thành... hot mom triệu view! 😜💖</p>
+            <p>Yêu thương thật nhiều! 🎂👩‍👧‍👦🎈</p>
+            <p>CHị Hai</p>
+            <p class="signature"><br>[Đạt]</p>
+            <p class="heart-symbol">❤️</p>
+        </div>
+    </div>
+    <script>
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts');
+            for (let i = 0; i < 10; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.animationDelay = `${Math.random() * 5}s`;
+                heartsContainer.appendChild(heart);
+            }
+        }
+
+        function applyWordTypingAnimation() {
+            const paragraphs = document.querySelectorAll('.letter p:not(.signature):not(.heart-symbol)');
+            let totalDelay = 2;
+            let totalWords = 0;
+
+            paragraphs.forEach((p, pIndex) => {
+                const words = p.textContent.trim().split(/\s+/);
+                p.innerHTML = words
+                    .map((word, index) => `<span class="word" style="animation-delay: ${totalDelay + index * 0.3}s">${word}</span>`)
+                    .join(' ');
+                totalDelay += words.length * 0.3;
+                totalWords += words.length;
+            });
+
+            setTimeout(() => {
+                paragraphs.forEach((p) => {
+                    p.classList.add('formatted');
+                });
+                envelope.classList.add('closed');
+                setTimeout(() => {
+                    window.location.href = 'banh.html';
+                }, 1000);
+            }, totalWords * 300 + 2000);
+        }
+
+        const envelope = document.getElementById('envelope');
+        envelope.addEventListener('click', function(event) {
+            if (envelope.classList.contains('closed')) {
+                envelope.classList.remove('closed');
+            } else {
+                envelope.classList.add('closed');
+            }
+            event.stopPropagation();
+        });
+
+        window.onload = function() {
+            createHearts();
+            applyWordTypingAnimation();
+        };
+    </script>
+</body>
+
+</html>
